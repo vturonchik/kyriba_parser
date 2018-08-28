@@ -1,6 +1,10 @@
 import argparse
 import xml_plugin as xml
 import csv_plugin as csv
+try:
+    import configparser
+except ImportError:
+    import ConfigParser as configparser
 
 
 def cli_args(available_parsers):
@@ -14,7 +18,7 @@ def cli_args(available_parsers):
         usage='''
         --help ---------------------------------- for show available formats parsers
         --format {formats} --help ---------------- for show data structure
-        --format {formats} --path path\\to\\file --- for show data
+        --format {formats} --path path\\to\\file --- for show data (The path to the file must not contain spaces.)
         '''.format(formats=', '.join(available_parsers))
     )
     parser.add_argument(
@@ -42,6 +46,10 @@ def show_help_message(available_parsers):
 
 
 def actions(available_parsers):
+    """
+    Processing of user input.
+    """
+
     res = cli_args(available_parsers)
     if res.help and res.format is None and res.path is None:
         show_help_message(available_parsers)
@@ -61,6 +69,17 @@ def actions(available_parsers):
         print('The specified actions were not found. Use help.')
 
 
+def get_available_parsers(path_to_conf):
+    """
+    Return list of parsers from config file
+    """
+
+    config = configparser.ConfigParser()
+    config.read(path_to_conf)
+    available_parsers = config.get('Settings', 'parsers')
+    return [i.strip() for i in available_parsers.split(',')]
+
+
 if __name__ == '__main__':
-    AVAILABLE_PARSERS = ['xml', 'csv']
-    actions(AVAILABLE_PARSERS)
+    parsers = get_available_parsers('settings.conf')
+    actions(parsers)
