@@ -37,7 +37,11 @@ def cli_args(available_parsers):
 
 
 def show_help_message(available_parsers):
-    print('Parsing for the following formats: {}'.format(', '.join(available_parsers)))
+    return """Parsing for the following formats: {formats}
+        --help ---------------------------------- show available formats parsers
+        --format {formats} --help ---------------- show data structure
+        --format {formats} --path path\\to\\file --- show data (The path to the file must not contain spaces.)"""\
+        .format(formats=', '.join(available_parsers))
 
 
 def actions(available_parsers):
@@ -46,19 +50,19 @@ def actions(available_parsers):
     """
 
     args = cli_args(available_parsers)
-    packages, plugins = plugins_load.get_plugins()
     if args.help and args.format is None and args.path is None:
-        show_help_message(available_parsers)
+        print(show_help_message(available_parsers))
     elif args.format and args.help:
-        for plugin in plugins:
-            module_obj = getattr(packages, plugin)
-            if args.format == module_obj.cl_desc():
-                module_obj.help_message()
+        if args.format not in available_parsers:
+            print('Parser not found')
+        for parser in plugins_load.get_parsers_instances():
+            if args.format == parser.cl_desc():
+                print(parser.help_message())
     elif args.format and args.path and args.help is False:
-        for plugin in plugins:
-            module_obj = getattr(packages, plugin)
-            if args.format == module_obj.cl_desc():
-                module_obj.parser(args.path)
+        for parser in plugins_load.get_parsers_instances():
+            if args.format == parser.cl_desc():
+                for row in parser.parser(args.path):
+                    print(row)
     else:
         print('The specified actions were not found. Use help.')
 
