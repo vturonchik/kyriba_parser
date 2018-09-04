@@ -67,6 +67,10 @@ def actions(available_parsers):
         print('The specified actions were not found. Use help.')
 
 
-if __name__ == '__main__':
+def main():
     parsers = plugins_load.get_available_parsers()
     actions(parsers)
+
+
+if __name__ == '__main__':
+    main()
