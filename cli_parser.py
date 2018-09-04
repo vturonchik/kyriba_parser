@@ -1,9 +1,5 @@
 import argparse
 import plugins_load
-try:
-    import ConfigParser as configparser
-except ImportError:
-    import configparser
 
 
 def cli_args(available_parsers):
@@ -41,7 +37,7 @@ def cli_args(available_parsers):
 
 
 def show_help_message(available_parsers):
-    print('Parsing for the following formats {%s}' % ', '.join(available_parsers))
+    print('Parsing for the following formats: {}'.format(', '.join(available_parsers)))
 
 
 def actions(available_parsers):

@@ -20,9 +20,9 @@ def parser(path_to_file):
             elements_list = []
             if child.tag == 'Client':
                 for step_child in child:
-                    elements_list.append('%s: {%s}' % (step_child.tag, step_child.text))
+                    elements_list.append('{}: <{}>'.format(step_child.tag, step_child.text))
                 print(', '.join(elements_list))
     except Exception as err_mes:
         with open('log.txt', 'a') as log_file:
-            log_file.write('%s - %s\n' % (datetime.strftime(datetime.now(), '%Y.%m.%d %H:%M:%S'), str(err_mes)))
+            log_file.write('{} - {}\n'.format(datetime.strftime(datetime.now(), '%Y.%m.%d %H:%M:%S'), str(err_mes)))
             print('Error written to log file.')

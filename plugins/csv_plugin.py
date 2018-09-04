@@ -16,9 +16,9 @@ def parser(path_to_file):
         with open(path_to_file) as csv_file:
             reader = csv.DictReader(csv_file)
             for row in reader:
-                print('Bank: {%s}, Country: {%s}, City: {%s}, Account: {%s}' %
-                      (row['Bank'], row['Country'], row['City'], row['Account']))
+                print('Bank: <{}>, Country: <{}>, City: <{}>, Account: <{}>'
+                      .format(row['Bank'], row['Country'], row['City'], row['Account']))
     except Exception as err_mes:
         with open('log.txt', 'a') as log_file:
-            log_file.write('%s - %s\n' % (datetime.strftime(datetime.now(), '%Y.%m.%d %H:%M:%S'), str(err_mes)))
+            log_file.write('{} - {}\n'.format(datetime.strftime(datetime.now(), '%Y.%m.%d %H:%M:%S'), str(err_mes)))
             print('Error written to log file.')

@@ -20,7 +20,7 @@ def get_plugins():
                 else:
                     module_dir = os.path.split(path)[1]
                 if module_name != "__init__":
-                    package_obj = __import__('%s.%s' % (module_dir, module_name))
+                    package_obj = __import__('{}.{}'.format(module_dir, module_name))
                     plugins.append(module_name)
     return package_obj, plugins
 
@@ -33,8 +33,8 @@ def get_path_to_plugins(path_to_conf):
         return [i.strip() for i in available_parsers.split(',') if i]
     except Exception as err_mes:
         with open('log.txt', 'a') as log_file:
-            log_file.write('%s - %s\n' % (datetime.strftime(datetime.now(), '%Y.%m.%d %H:%M:%S'), str(err_mes)))
-        print('%s in file %s' % (str(err_mes), path_to_conf))
+            log_file.write('{} - {}\n'.format(datetime.strftime(datetime.now(), '%Y.%m.%d %H:%M:%S'), str(err_mes)))
+        print('{} in file {}'.format(str(err_mes), path_to_conf))
         exit(0)
 
 
