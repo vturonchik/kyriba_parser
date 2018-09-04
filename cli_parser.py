@@ -1,7 +1,5 @@
 import argparse
-from datetime import datetime
-import xml_plugin as xml
-import csv_plugin as csv
+import plugins_load
 try:
     import ConfigParser as configparser
 except ImportError:
@@ -52,41 +50,23 @@ def actions(available_parsers):
     """
 
     args = cli_args(available_parsers)
+    packages, plugins = plugins_load.get_plugins()
     if args.help and args.format is None and args.path is None:
         show_help_message(available_parsers)
     elif args.format and args.help:
-        if args.format == 'csv':
-            csv.help_message()
-        elif args.format == 'xml':
-            xml.help_message()
-        else:
-            print('The specified parser was not found.')
+        for plugin in plugins:
+            module_obj = getattr(packages, plugin)
+            if args.format == module_obj.cl_desc():
+                module_obj.help_message()
     elif args.format and args.path and args.help is False:
-        if args.format == 'csv':
-            csv.parser(args.path)
-        elif args.format == 'xml':
-            xml.parser(args.path)
+        for plugin in plugins:
+            module_obj = getattr(packages, plugin)
+            if args.format == module_obj.cl_desc():
+                module_obj.parser(args.path)
     else:
         print('The specified actions were not found. Use help.')
 
 
-def get_available_parsers(path_to_conf):
-    """
-    Return list of parsers from config file
-    """
-
-    config = configparser.ConfigParser()
-    config.read(path_to_conf)
-    try:
-        available_parsers = config.get('Settings', 'parsers')
-        return [i.strip() for i in available_parsers.split(',')]
-    except Exception as err_mes:
-        with open('log.txt', 'a') as log_file:
-            log_file.write('%s - %s\n' % (datetime.strftime(datetime.now(), '%Y.%m.%d %H:%M:%S'), str(err_mes)))
-        print('%s in file %s' % (str(err_mes), path_to_conf))
-        exit(0)
-
-
 if __name__ == '__main__':
-    parsers = get_available_parsers('settings.conf')
+    parsers = plugins_load.get_available_parsers()
     actions(parsers)

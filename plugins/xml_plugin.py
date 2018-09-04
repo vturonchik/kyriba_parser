@@ -2,6 +2,10 @@ from xml.etree import cElementTree as ET
 from datetime import datetime
 
 
+def cl_desc():
+    return 'xml'
+
+
 def help_message():
     print('Data from the XML format will be output in the following format')
     print('Bank: {bank field}, Country: {country field}, City: {city field}, Account: {account filed}')

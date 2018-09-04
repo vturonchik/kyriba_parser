@@ -2,6 +2,10 @@ import csv
 from datetime import datetime
 
 
+def cl_desc():
+    return 'csv'
+
+
 def help_message():
     print('Data from the CSV format will be output in the following format')
     print('Bank: {bank field}, Country: {country field}, City: {city field}, Account: {account filed}')
