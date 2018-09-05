@@ -59,6 +59,8 @@ def actions(available_parsers):
             if args.format == parser.cl_desc():
                 print(parser.help_message())
     elif args.format and args.path and args.help is False:
+        if args.format not in available_parsers:
+            print('Parser not found')
         for parser in plugins_load.get_parsers_instances():
             if args.format == parser.cl_desc():
                 for row in parser.parser(args.path):
