@@ -1,11 +1,11 @@
 import os
-from datetime import datetime
 try:
     import ConfigParser as configparser
 except ImportError:
     import configparser
 import inspect
 from plugins.base_parser import BaseParser
+from cli_parser_logging import log_write
 
 
 def get_plugins():
@@ -28,8 +28,8 @@ def get_plugins():
                     if module_name != "__init__" and module_name != 'base_parser':
                         package_obj = __import__('{}.{}'.format(module_dir, module_name))
                         plugins.append(module_name)
-        except Exception:
-            pass
+        except Exception as err:
+            log_write(err)
     return package_obj, plugins
 
 
@@ -42,11 +42,8 @@ def get_path_to_plugins(path_to_conf):
     try:
         available_parsers = config.get('Settings', 'plugins_dir')
         return [i.strip() for i in available_parsers.split(',') if i]
-    except Exception as err_mes:
-        with open('log.txt', 'a') as log_file:
-            log_file.write('{} - {}\n'.format(datetime.strftime(datetime.now(), '%Y.%m.%d %H:%M:%S'), str(err_mes)))
-        print('{} in file {}'.format(str(err_mes), path_to_conf))
-        exit(0)
+    except Exception as err:
+        log_write(err)
 
 
 def get_parsers_instances():

@@ -1,6 +1,6 @@
 from xml.etree import cElementTree as ET
-from datetime import datetime
 from base_parser import BaseParser
+from cli_parser_logging import log_write
 
 
 class XMLParser(BaseParser):
@@ -24,7 +24,5 @@ class XMLParser(BaseParser):
                         elements_list.append('{}: <{}>'.format(step_child.tag, step_child.text))
                     output.append(', '.join(elements_list))
             return output
-        except Exception as err_mes:
-            with open('log.txt', 'a') as log_file:
-                log_file.write('{} - {}\n'.format(datetime.strftime(datetime.now(), '%Y.%m.%d %H:%M:%S'), str(err_mes)))
-                print('Error written to log file.')
+        except Exception as err:
+            log_write(err)

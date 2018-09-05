@@ -68,6 +68,9 @@ def actions(available_parsers):
 
 
 def main():
+    """
+    The main entry point of the application.
+    """
     parsers = plugins_load.get_available_parsers()
     actions(parsers)
 

@@ -1,6 +1,7 @@
 import csv
 from datetime import datetime
 from base_parser import BaseParser
+from cli_parser_logging import log_write
 
 
 class CSVParser(BaseParser):
@@ -21,7 +22,5 @@ class CSVParser(BaseParser):
                     output.append('Bank: <{}>, Country: <{}>, City: <{}>, Account: <{}>'
                                   .format(row['Bank'], row['Country'], row['City'], row['Account']))
             return output
-        except Exception as err_mes:
-            with open('log.txt', 'a') as log_file:
-                log_file.write('{} - {}\n'.format(datetime.strftime(datetime.now(), '%Y.%m.%d %H:%M:%S'), str(err_mes)))
-                print('Error written to log file.')
+        except Exception as err:
+            log_write(err)
