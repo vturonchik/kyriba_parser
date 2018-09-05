@@ -1,6 +1,8 @@
 import csv
-from datetime import datetime
-from base_parser import BaseParser
+try:
+    from base_parser import BaseParser
+except ModuleNotFoundError:
+    from plugins.base_parser import BaseParser
 from cli_parser_logging import log_write
 
 
