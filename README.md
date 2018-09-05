@@ -9,4 +9,4 @@ To write your own parser from scratch, you need:
 
 To add a new directory with plugins:
 1. In the settings.conf file, in the plugins_dir parameter, use comma to add the path to the directory with the plugins.
-2. There must be a __init__.py file in the directory
+2. There must be a \_\_init\_\_.py file in the directory
