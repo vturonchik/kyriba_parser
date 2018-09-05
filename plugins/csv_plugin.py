@@ -25,4 +25,3 @@ class CSVParser(BaseParser):
             with open('log.txt', 'a') as log_file:
                 log_file.write('{} - {}\n'.format(datetime.strftime(datetime.now(), '%Y.%m.%d %H:%M:%S'), str(err_mes)))
                 print('Error written to log file.')
-

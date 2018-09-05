@@ -16,17 +16,20 @@ def get_plugins():
     plugins = []
     package_obj = None
     for path in paths:
-        files = os.listdir(path)
-        for f_name in files:
-            if f_name.endswith('.py'):
-                module_name = f_name[:-3]
-                if path[-1] == '\\':
-                    module_dir = os.path.split(path[:-1])[1]
-                else:
-                    module_dir = os.path.split(path)[1]
-                if module_name != "__init__" and module_name != 'base_parser':
-                    package_obj = __import__('{}.{}'.format(module_dir, module_name))
-                    plugins.append(module_name)
+        try:
+            files = os.listdir(path)
+            for f_name in files:
+                if f_name.endswith('.py'):
+                    module_name = f_name[:-3]
+                    if path[-1] == '\\':
+                        module_dir = os.path.split(path[:-1])[1]
+                    else:
+                        module_dir = os.path.split(path)[1]
+                    if module_name != "__init__" and module_name != 'base_parser':
+                        package_obj = __import__('{}.{}'.format(module_dir, module_name))
+                        plugins.append(module_name)
+        except Exception:
+            pass
     return package_obj, plugins
 
 
@@ -73,4 +76,3 @@ def get_available_parsers():
     for parser_obj in parser_objects:
         available_parsers.append(parser_obj.cl_desc())
     return available_parsers
-
